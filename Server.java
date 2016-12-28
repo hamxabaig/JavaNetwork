@@ -5,13 +5,13 @@ import java.io.*;
 public class Server extends Thread {
     private ServerSocket serverSocket;
 
-    public Server(int port) throws IOException {
+    public Server(int port, String host) throws IOException {
         serverSocket = new ServerSocket(port);
+        System.out.println("Waiting for client on port " + host + ":" + serverSocket.getLocalPort() + "...");
         serverSocket.setSoTimeout(1000000);
     }
 
     public void run() {
-        System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
         Socket server = null;
         try {
             server = serverSocket.accept();
@@ -49,7 +49,7 @@ public class Server extends Thread {
     public static void main(String[] args) {
         //  int port = Integer.parseInt(args[0]);
         try {
-            Thread t = new Server(4200);
+            Thread t = new Server(4200, InetAddress.getLocalHost().getHostAddress());
             t.start();
         } catch (IOException e) {
             e.printStackTrace();
